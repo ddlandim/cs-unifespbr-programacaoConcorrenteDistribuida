@@ -24,213 +24,219 @@ struct thread{
 
 pthread_barrier_t barWait;
 
-int **grid, **new_grid, count[NUM_THREADS];
+int **grid, **new_grid, count[NUM_THREADS], count_neighbors = 0;
 
-int linha_superior(int **grid, int *count, int i, int j){
+int linha_superior(int **grid, int i, int j){
 	if(grid[dim-1][j] == ALIVE)
-		count++; //acima
+		count_neighbors++; //acima
 	if(grid[i+1][j] == ALIVE)
-		count++; //abaixo
+		count_neighbors++; //abaixo
 
 	//diagonal esquerda
 	if(j == 0){
 		//vizinhos da esquerda
 		if(grid[dim-1][dim-1] == ALIVE)
-			count++;
+			count_neighbors++;
 		if(grid[i][dim-1] == ALIVE)
-			count++;
+			count_neighbors++;
 		if(grid[i+1][dim-1] == ALIVE)
-			count++;
+			count_neighbors++;
 
 		//vizinhos da direita
 		if(grid[dim-1][j+1] == ALIVE)
-			count++;
+			count_neighbors++;
 		if(grid[i][j+1] == ALIVE)
-			count++;
+			count_neighbors++;
 		if(grid[i+1][j+1] == ALIVE)
-			count++;
+			count_neighbors++;
 
-		return count;
+		return count_neighbors;
 	}
 
 	//diagonal direita
 	if(j == dim - 1){
 		//vizinhos da esquerda
 		if(grid[dim-1][j-1] == ALIVE)
-			count++;
+			count_neighbors++;
 		if(grid[i][j-1] == ALIVE)
-			count++;
+			count_neighbors++;
 		if(grid[i+1][j-1] == ALIVE)
-			count++;
+			count_neighbors++;
 		//vizinhos da direita
 		if(grid[dim-1][0] == ALIVE)
-			count++;
+			count_neighbors++;
 		if(grid[i][0] == ALIVE)
-			count++;
+			count_neighbors++;
 		if(grid[i+1][0] == ALIVE)
-			count++;
+			count_neighbors++;
 
-		return count;
+		return count_neighbors;
 	}
 
 	//fora dos cantos
 	else {
 		//vizinhos da esquerda
 		if(grid[dim-1][j-1] == ALIVE)
-			count++;
+			count_neighbors++;
 		if(grid[i][j-1] == ALIVE)
-			count++;
+			count_neighbors++;
 		if(grid[i+1][j-1] == ALIVE)
-			count++;
+			count_neighbors++;
 		//vizinhos da direita
 		if(grid[dim-1][j+1] == ALIVE)
-			count++;
+			count_neighbors++;
 		if(grid[i][j+1] == ALIVE)
-			count++;
+			count_neighbors++;
 		if(grid[i+1][j+1] == ALIVE)
-			count++;
+			count_neighbors++;
 
-		return count;
+		return count_neighbors;
 	}
 }
 
-int linha_inferior(int **grid, int *count, int i, int j){
+int linha_inferior(int **grid, int i, int j){
 	if(grid[i-1][j] == ALIVE)
-		count++; //acima
+		count_neighbors++; //acima
 	if(grid[0][j] == ALIVE)
-		count++; //abaixo
+		count_neighbors++; //abaixo
 
 	//diagonal esquerda
 	if(j == 0){
 			//vizinhos direita
 			if(grid[i-1][dim-1] == ALIVE)
-				count++;
+				count_neighbors++;
 			if(grid[i][dim-1] == ALIVE)
-				count++;
+				count_neighbors++;
 			if(grid[0][dim-1] == ALIVE)
-				count++;
+				count_neighbors++;
 			//vizinhos esquerda
 			if(grid[i-1][j+1] == ALIVE)
-			 count++;
+			 count_neighbors++;
 			if(grid[i][j+1] == ALIVE)
-			 count++;
+			 count_neighbors++;
 			if(grid[0][j+1] == ALIVE)
-			 count++;
-			return count;
+			 count_neighbors++;
+			return count_neighbors;
 		}
 
 	//diagonal direita
 	if(j == dim - 1){
 			//vizinhos esquerda
 			if(grid[i-1][j-1] == ALIVE)
-			 count++;
+			 count_neighbors++;
 			if(grid[i][j-1] == ALIVE)
-			 count++;
+			 count_neighbors++;
 			if(grid[0][j-1] == ALIVE)
-			 count++;
+			 count_neighbors++;
 			//vizinhos direita
 			if(grid[i-1][0] == ALIVE)
-			 count++;
+			 count_neighbors++;
 			if(grid[i][0] == ALIVE)
-			 count++;
+			 count_neighbors++;
 			if(grid[0][0] == ALIVE)
-			 count++;
-			return count;
+			 count_neighbors++;
+			return count_neighbors;
 		}
 
 	//fora dos cantos
 	else{
 			//esquerda
-			if(grid[i-1][j-1] == ALIVE) count++;
-			if(grid[i][j-1] == ALIVE) count++;
-			if(grid[0][j-1] == ALIVE) count++;
+			if(grid[i-1][j-1] == ALIVE)
+				count_neighbors++;
+			if(grid[i][j-1] == ALIVE)
+				count_neighbors++;
+			if(grid[0][j-1] == ALIVE)
+				count_neighbors++;
 			//direita
-			if(grid[i-1][j+1] == ALIVE) count++;
-			if(grid[i][j+1] == ALIVE) count++;
-			if(grid[0][j+1] == ALIVE) count++;
-			return count;
+			if(grid[i-1][j+1] == ALIVE)
+				count_neighbors++;
+			if(grid[i][j+1] == ALIVE)
+				count_neighbors++;
+			if(grid[0][j+1] == ALIVE)
+				count_neighbors++;
+			return count_neighbors;
 		}
 }
 
-int coluna_esquerda(int **grid, int *count, int i, int j){
+int coluna_esquerda(int **grid, int i, int j){
 	//esquerda
 	if(grid[i-1][dim-1] == ALIVE)
-	 count++;
+	 count_neighbors++;
 	if(grid[i][dim-1] == ALIVE)
-	 count++;
+	 count_neighbors++;
 	if(grid[i+1][dim-1] == ALIVE)
-	 count++;
+	 count_neighbors++;
 	//direita
 	if(grid[i-1][j+1] == ALIVE)
-	 count++;
+	 count_neighbors++;
 	if(grid[i][j+1] == ALIVE)
-	 count++;
+	 count_neighbors++;
 	if(grid[i+1][j+1] == ALIVE)
-	 count++;
-	return count;
+	 count_neighbors++;
+	return count_neighbors;
 }
 
-int coluna_direita(int **grid, int *count, int i, int j) {
+int coluna_direita(int **grid, int i, int j) {
 	//esquerda
 	if(grid[i-1][j-1] == ALIVE)
-	 count++;
+	 count_neighbors++;
 	if(grid[i][j-1] == ALIVE)
-	 count++;
+	 count_neighbors++;
 	if(grid[i+1][j-1] == ALIVE)
-	 count++;
+	 count_neighbors++;
 	//direita
 	if(grid[i-1][0] == ALIVE)
-	 count++;
+	 count_neighbors++;
 	if(grid[i][0] == ALIVE)
-	 count++;
+	 count_neighbors++;
 	if(grid[i+1][0] == ALIVE)
-	 count++;
-	return count;
+	 count_neighbors++;
+	return count_neighbors;
 }
 
 int getNeighbors(int** grid, int i, int j){
-	int count = 0;
+	count_neighbors = 0;
 	//VERIFICANDO AS BORDAS
   if(i == 0)
-		return linha_superior(grid,&count,i,j);
+		return linha_superior(grid,i,j);
 	if(i == dim - 1)
-		return linha_inferior(grid,&count,i,j);
+		return linha_inferior(grid,i,j);
 	//Vizinhos acima e abaixo
 	if(grid[i-1][j] == ALIVE)
-		count++; //acima
+		count_neighbors++; //acima
   if(grid[i+1][j] == ALIVE)
-		count++; //abaixo
+		count_neighbors++; //abaixo
 	if(j == 0)
-		return coluna_esquerda(grid,&count,i,j);
+		return coluna_esquerda(grid,i,j);
 	if(j == dim-1)
-		return ultima_coluna(grid,&count,i,j);
+		return coluna_direita(grid,i,j);
 
 	//FORA DAS BORDAS
 	//vizinhos esquerda
 		if(grid[i-1][j-1] == ALIVE)
-		 count++;
+		 count_neighbors++;
 		if(grid[i][j-1] == ALIVE)
-		 count++;
+		 count_neighbors++;
 		if(grid[i+1][j-1] == ALIVE)
-		 count++;
+		 count_neighbors++;
 	//vizinhos direita
 		if(grid[i-1][j+1] == ALIVE)
-		 count++;
+		 count_neighbors++;
 		if(grid[i][j+1] == ALIVE)
-		 count++;
+		 count_neighbors++;
 		if(grid[i+1][j+1] == ALIVE)
-		 count++;
-		return count;
+		 count_neighbors++;
+		return count_neighbors;
 }
 
 void *new_generation(void *args){
+	int count_gen;
 	struct thread *t = (struct thread *)args;
 	for (int i = t->inicio; i < t->fim; i++){
 		for (int j = 0; j < dim; j++)
 			if(grid[i][j] == ALIVE) count[t->index]++;
 		pthread_barrier_wait(&barWait);
 	}
-	int count_gen;
 	for (count_gen= 0; count_gen < GENERATIONS; count_gen++){
 		for (int i = t->inicio; i < t->fim; i++){
 			for (int j = 0; j < dim; j++){
@@ -264,8 +270,8 @@ void *new_generation(void *args){
 
 void aloca_grid(int **matrix, int size){
 	int i = 0;
-	matrix = malloc(size * dimof(int*));
-    for(i = 0; i < size; i++) grid[i] = malloc(dim * dimof(int));
+	matrix = malloc(size * sizeof(int*));
+    for(i = 0; i < size; i++) grid[i] = malloc(size * sizeof(int));
 }
 
 int main(int argc, char *argv[]){
@@ -274,11 +280,9 @@ int main(int argc, char *argv[]){
   	int tmili, tempoLaco;
   	start = clock();
   	gettimeofday(&inicio, NULL);
-	int  i, total = 0;
-	grid = malloc(dim * dimof(int*));
-    for(i = 0; i < dim; i++) grid[i] = malloc(dim * dimof(int));
-	aloca_grid(grid, dim);
-	aloca_grid(new_grid, dim);
+	int  i, total = 0;;
+	aloca_grid(&grid, dim);
+	aloca_grid(&new_grid, dim);
 	for ( i = 0; i < NUM_THREADS; i++){
 		count[i] = 0;
 	}
@@ -288,7 +292,6 @@ int main(int argc, char *argv[]){
             grid[i][j] = rand() % 2;
         }
     }
-
 	pthread_barrier_init(&barWait, NULL, NUM_THREADS);
 	struct thread threadArray[NUM_THREADS];
 	threadArray[0].inicio = 0;
